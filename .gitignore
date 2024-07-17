@@ -11,3 +11,5 @@
 *.a
 
 *.txt
+
+.DS_Store
