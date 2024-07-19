@@ -6,11 +6,40 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/17 22:43:47 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/19 23:59:04 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
+
+static int	*string_to_bin(size_t len, const char *str)
+{
+	int		*bin;
+	size_t	i;
+	int		j;
+	size_t	index;
+	char	c;
+
+	bin = NULL;
+	bin = malloc(sizeof(int) * len * 8);
+	if (!bin)
+		return (NULL);
+	i = 0;
+	index = 0;
+	while (i < len)
+	{
+		c = str[i];
+		j = 7;
+		while (j >= 0)
+		{
+			bin[index] = (c >> j) & 1;
+			j--;
+			index++;
+		}
+		i++;
+	}
+	return (bin);
+}
 
 static int ft_is_number(char *arg)
 {
@@ -54,6 +83,7 @@ int	main(int argc, char **argv)
 	pid_t	pid;
 	char	*str;
 	size_t	len;
+	int		*bin;
 
 	str = NULL;
 	pid = -1;
@@ -62,8 +92,28 @@ int	main(int argc, char **argv)
 		return (1);
 
 	ft_printf("Valid PID: %d\n", pid);
-	ft_printf("str      : %s\n", str);
-	ft_printf("str_len  : %u\n", len);
+	ft_printf("Msg      : %s\n", str);
+	ft_printf("Msg_len  : %u\n", len);
+
+	bin = string_to_bin(len, str);
+	if (!bin)
+		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
+
+	unsigned int	i = 0;
+	ft_printf("Msg in bin:\n");
+	while (i < (len * 8))
+	{
+		if (bin[i] == 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		ft_printf("%d", bin[i]);
+		i++;
+		usleep(100);
+	}
+	//Must add terminating byte HERE
+	ft_printf("\n");
+	kill(pid, SIGKILL);
 
 	free(str);
 	return (0);

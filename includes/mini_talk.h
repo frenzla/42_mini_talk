@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:01:18 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/17 22:43:51 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/19 23:37:44 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/types.h>
 # include <signal.h>
 # include "libft.h"
+# include <stdio.h>
 
 // Définir les codes de couleur ANSI
 # define RED "\x1b[31m"
