@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/19 23:59:04 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/25 11:45:06 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	main(int argc, char **argv)
 	char	*str;
 	size_t	len;
 	int		*bin;
+	unsigned int	i;
 
 	str = NULL;
 	pid = -1;
@@ -99,7 +100,7 @@ int	main(int argc, char **argv)
 	if (!bin)
 		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
 
-	unsigned int	i = 0;
+	i = 0;
 	ft_printf("Msg in bin:\n");
 	while (i < (len * 8))
 	{
@@ -111,9 +112,16 @@ int	main(int argc, char **argv)
 		i++;
 		usleep(100);
 	}
-	//Must add terminating byte HERE
+	i = 0;
+	while (i++ < 8)
+	{
+		kill(pid, SIGUSR2);
+		usleep(100);
+	}
+
 	ft_printf("\n");
-	kill(pid, SIGKILL);
+	//usleep(1000);
+	//kill(pid, SIGKILL);
 
 	free(str);
 	return (0);
