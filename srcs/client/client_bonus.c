@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/25 15:00:05 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/25 14:42:10 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	*string_to_bin(size_t len, const char *str)
 	return (bin);
 }
 
-static int	ft_is_number(char *arg)
+static int ft_is_number(char *arg)
 {
 	int	i;
 
@@ -72,24 +72,43 @@ static size_t	check_args(int argc, char **argv, pid_t *pid, char **str)
 		*str = ft_strdup(argv[1]);
 	}
 	else
-		return (ft_printf(RED \
-		"Error: wrong PID or process not active\n" RESET), RET_ERR);
+		return(ft_printf(RED "Error: wrong PID or process not active\n" RESET), RET_ERR);
 	if (!(*str))
-		return (ft_printf(RED "Error: Input a msg to print\n" RESET), RET_ERR);
+		return(ft_printf(RED "Error: Input a msg to print\n" RESET), RET_ERR);
 	return (ft_strlen(*str));
 }
 
-void	send_bits(int *bin, pid_t pid, size_t	len)
+int	main(int argc, char **argv)
 {
+	pid_t	pid;
+	char	*str;
+	size_t	len;
+	int		*bin;
 	unsigned int	i;
 
+	str = NULL;
+	pid = -1;
+	len = check_args(argc, argv, &pid, &str);
+	if (len == RET_ERR)
+		return (1);
+
+	ft_printf("Valid PID: %d\n", pid);
+	ft_printf("Msg      : %s\n", str);
+	ft_printf("Msg_len  : %u\n", len);
+
+	bin = string_to_bin(len, str);
+	if (!bin)
+		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
+
 	i = 0;
+	ft_printf("Msg in bin:\n");
 	while (i < (len * 8))
 	{
 		if (bin[i] == 1)
 			kill(pid, SIGUSR1);
 		else
 			kill(pid, SIGUSR2);
+		ft_printf("%d", bin[i]);
 		i++;
 		usleep(300);
 	}
@@ -99,24 +118,9 @@ void	send_bits(int *bin, pid_t pid, size_t	len)
 		kill(pid, SIGUSR2);
 		usleep(300);
 	}
-}
 
-int	main(int argc, char **argv)
-{
-	pid_t	pid;
-	char	*str;
-	size_t	len;
-	int		*bin;
+	ft_printf("\n");
 
-	str = NULL;
-	pid = -1;
-	len = check_args(argc, argv, &pid, &str);
-	if (len == RET_ERR)
-		return (1);
-	bin = string_to_bin(len, str);
-	if (!bin)
-		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
-	send_bits(bin, pid, len);
 	free(str);
 	return (0);
 }

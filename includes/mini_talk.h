@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:01:18 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/19 23:37:44 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/25 14:58:45 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 // Définir les codes de couleur ANSI
 # define RED "\x1b[31m"
 # define GREEN "\x1b[32m"
+# define CYAN "\e[0;36m"
 # define RESET "\x1b[0m"
 
 # define RET_ERR	0

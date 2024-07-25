@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:58:58 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/25 14:58:35 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/25 14:37:44 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,14 @@
 
 void	handler(int sig)
 {
-	static int				bit;
+	static int	bit;
 	static unsigned char	c;
+
+	//check receiving bins
+/*	if (sig == SIGUSR1)
+		ft_printf("1");
+	if (sig == SIGUSR2)
+		ft_printf("0");*/
 
 	if (sig == SIGUSR1)
 		c |= (1 << (7 - bit));
@@ -23,9 +29,10 @@ void	handler(int sig)
 	if (bit == 8)
 	{
 		if (c == 0)
-			ft_printf(GREEN"\nEND OF MSG\n"RESET);
+			ft_printf(GREEN"\nEnd of msg\n"RESET);
 		else
-			ft_printf(CYAN"%c"RESET, c);
+		ft_printf("%c", c);
+//		ft_printf("\n"); //to delete (check)
 		bit = 0;
 		c = 0;
 	}
@@ -33,16 +40,18 @@ void	handler(int sig)
 
 int	main(void)
 {
-	pid_t				pid;
-	struct sigaction	sa;
+	pid_t	pid;
+	struct sigaction sa;
 
 	sa.sa_flags = 0;
 	sa.sa_handler = &handler;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
+
 	pid = getpid();
 	ft_printf("Process ID = %d\n", pid);
 	while (1)
 		pause();
+
 	return (0);
 }
