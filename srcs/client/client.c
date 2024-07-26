@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/26 15:35:25 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:50:53 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,13 +91,13 @@ void	send_bits(int *bin, pid_t pid, size_t	len)
 		else
 			kill(pid, SIGUSR2);
 		i++;
-		usleep(300);
+		usleep(500);
 	}
 	i = 0;
 	while (i++ < 8)
 	{
 		kill(pid, SIGUSR2);
-		usleep(300);
+		usleep(500);
 	}
 }
 
@@ -112,7 +112,11 @@ int	main(int argc, char **argv)
 	pid = -1;
 	len = check_args(argc, argv, &pid, &str);
 	if (len == RET_ERR)
+	{
+		if (str)
+			free(str);
 		return (1);
+	}
 	bin = string_to_bin(len, str);
 	if (!bin)
 		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
