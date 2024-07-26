@@ -1,57 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:58:58 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/25 14:37:44 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 14:12:48 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
 
-void	handler(int sig)
+void	handler(int sig, siginfo_t *info, void *context)
 {
 	static int	bit;
-	static unsigned char	c;
+	static char	c;
 
-	//check receiving bins
-/*	if (sig == SIGUSR1)
-		ft_printf("1");
-	if (sig == SIGUSR2)
-		ft_printf("0");*/
-
+	(void)context;
 	if (sig == SIGUSR1)
 		c |= (1 << (7 - bit));
 	bit++;
 	if (bit == 8)
 	{
-		if (c == 0)
-			ft_printf(GREEN"\nEnd of msg\n"RESET);
-		else
-		ft_printf("%c", c);
-//		ft_printf("\n"); //to delete (check)
 		bit = 0;
+		if (c == 0)
+		{
+			ft_printf(BLUE"\nEND OF MSG\n"RESET);
+			kill(info->si_pid, SIGUSR2);
+			return ;
+		}
+		ft_printf("%c", c);
 		c = 0;
 	}
+	kill(info->si_pid, SIGUSR1);
 }
 
 int	main(void)
 {
-	pid_t	pid;
-	struct sigaction sa;
+	pid_t				pid;
+	struct sigaction	sa;
 
-	sa.sa_flags = 0;
-	sa.sa_handler = &handler;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = &handler;
+	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+	{
+		perror("Error setting up signal handlers");
+		return 1;
+	}
 	pid = getpid();
 	ft_printf("Process ID = %d\n", pid);
 	while (1)
 		pause();
-
 	return (0);
 }
