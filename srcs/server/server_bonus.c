@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:58:58 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/26 15:17:35 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:29:11 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	main(void)
 	pid_t				pid;
 	struct sigaction	sa;
 
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = &handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1 || \

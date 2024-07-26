@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/26 14:49:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/26 15:17:12 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:27:37 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	send_bits(int *bin, pid_t pid, size_t len)
 	unsigned int		i;
 	int					k;
 
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = &return_handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1 || \

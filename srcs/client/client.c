@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/25 15:00:05 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:35:25 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ int	main(int argc, char **argv)
 		return (ft_printf(RED "Error: couldn't transform to bin\n" RESET), 1);
 	send_bits(bin, pid, len);
 	free(str);
+	free(bin);
 	return (0);
 }
