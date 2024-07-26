@@ -6,7 +6,7 @@
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 16:58:58 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/26 14:12:48 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/26 15:17:35 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ int	main(void)
 
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = &handler;
-	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+	if (sigaction(SIGUSR1, &sa, NULL) == -1 || \
+	sigaction(SIGUSR2, &sa, NULL) == -1)
 	{
 		perror("Error setting up signal handlers");
-		return 1;
+		return (1);
 	}
 	pid = getpid();
 	ft_printf("Process ID = %d\n", pid);

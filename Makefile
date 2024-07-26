@@ -6,7 +6,7 @@
 #    By: alarose <alarose@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 16:33:54 by alarose           #+#    #+#              #
-#    Updated: 2024/07/26 09:41:58 by alarose          ###   ########.fr        #
+#    Updated: 2024/07/26 15:11:19 by alarose          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,8 @@ SERVER_BONUS_FILES = server_bonus.c
 SERVER_BONUS_SRCS = $(addprefix $(SERVER_DIR), $(SERVER_BONUS_FILES))
 SERVER_BONUS_OBJS = $(SERVER_BONUS_SRCS:.c=.o)
 
-CLIENT_BONUS_FILES = client_bonus.c
+CLIENT_BONUS_FILES =	client_bonus.c	\
+						client_utils_bonus.c
 CLIENT_BONUS_SRCS = $(addprefix $(CLIENT_DIR), $(CLIENT_BONUS_FILES))
 CLIENT_BONUS_OBJS = $(CLIENT_BONUS_SRCS:.c=.o)
 
