@@ -6,7 +6,7 @@
 #    By: alarose <alarose@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/29 11:35:36 by alarose           #+#    #+#              #
-#    Updated: 2024/06/12 16:46:22 by alarose          ###   ########.fr        #
+#    Updated: 2024/07/31 09:59:51 by alarose          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,17 +73,17 @@ LIB = ranlib
 all : ${NAME}
 
 %.o : %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME) : $(OBJ)
-	$(AR) $@ $^
-	$(LIB) $@
+	@$(AR) $@ $^
+	@$(LIB) $@
 
 clean :
-	/bin/rm -f $(OBJ)
+	@/bin/rm -f $(OBJ)
 
 fclean : clean
-	/bin/rm -f $(NAME)
+	@/bin/rm -f $(NAME)
 
 re : fclean all
 

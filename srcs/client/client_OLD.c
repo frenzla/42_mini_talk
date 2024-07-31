@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client_bonus.c                                     :+:      :+:    :+:   */
+/*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alarose <alarose@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/16 17:09:21 by alarose           #+#    #+#             */
-/*   Updated: 2024/07/26 15:51:40 by alarose          ###   ########.fr       */
+/*   Updated: 2024/07/31 09:18:34 by alarose          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_talk.h"
-
-int	send_bits(int *bin, pid_t pid, size_t len);
 
 static int	*string_to_bin(size_t len, const char *str)
 {
@@ -79,6 +77,28 @@ static size_t	check_args(int argc, char **argv, pid_t *pid, char **str)
 	if (!(*str))
 		return (ft_printf(RED "Error: Input a msg to print\n" RESET), RET_ERR);
 	return (ft_strlen(*str));
+}
+
+void	send_bits(int *bin, pid_t pid, size_t	len)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < (len * 8))
+	{
+		if (bin[i] == 1)
+			kill(pid, SIGUSR1);
+		else
+			kill(pid, SIGUSR2);
+		i++;
+		usleep(500);
+	}
+	i = 0;
+	while (i++ < 8)
+	{
+		kill(pid, SIGUSR2);
+		usleep(500);
+	}
 }
 
 int	main(int argc, char **argv)

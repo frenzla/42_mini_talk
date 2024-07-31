@@ -6,7 +6,7 @@
 #    By: alarose <alarose@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/16 16:33:54 by alarose           #+#    #+#              #
-#    Updated: 2024/07/26 15:11:19 by alarose          ###   ########.fr        #
+#    Updated: 2024/07/31 10:05:01 by alarose          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 
 CLIENT_DIR = ./srcs/client/
 
-CLIENT_FILES = client.c
+CLIENT_FILES = client.c \
+				client_utils.c
 CLIENT_SRCS = $(addprefix $(CLIENT_DIR), $(CLIENT_FILES))
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 
@@ -52,42 +53,56 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
+RED = \033[31m
+GREEN = \033[32m
+YELLOW = \033[33m
+BLUE = \033[34m
+RESET = \033[0m
+
 all : $(SERVER) $(CLIENT)
 
 ./%.o : ./%.c
-	$(CC) $(CFLAGS) -g3 -ggdb3 $(INCLUDES) -o $@ -c $<
+	@$(CC) $(CFLAGS) -g3 -ggdb3 $(INCLUDES) -o $@ -c $<
 
 $(LIBFT_FILE) :
-	make -C $(LIBFT_PATH)
+	@echo "$(YELLOW)Building libft...$(RESET)"
+	@make --no-print-directory -C $(LIBFT_PATH)
+	@echo "$(GREEN)Library $(LIBFT) successfully built...$(RESET)"
 
 $(SERVER) : $(SERVER_OBJS) $(LIBFT_FILE)
-	$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@echo "$(GREEN)Executable $(BLUE)'$@'$(GREEN) successfully built$(RESET)"
 
 $(CLIENT) : $(CLIENT_OBJS) $(LIBFT_FILE)
-	$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@echo "$(GREEN)Executable $(BLUE)'$@'$(GREEN) successfully built$(RESET)"
 
 $(SERVER_BONUS) : $(SERVER_BONUS_OBJS) $(LIBFT_FILE)
-	$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@echo "$(GREEN)Executable $(BLUE)'$@'$(GREEN) successfully built$(RESET)"
 
 $(CLIENT_BONUS) : $(CLIENT_BONUS_OBJS) $(LIBFT_FILE)
-	$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@$(CC) $(CFLAGS) -g3 -ggdb3 -o $@ $^ $(LIBFT_FLAGS)
+	@echo "$(GREEN)Executable $(BLUE)'$@'$(GREEN) successfully built$(RESET)"
 
 bonus : $(SERVER_BONUS) $(CLIENT_BONUS)
 
 clean :
-	make -C $(LIBFT_PATH) clean
-	$(RM) $(SERVER_OBJS)
-	$(RM) $(CLIENT_OBJS)
-	$(RM) $(TESTBINS)
-	$(RM) $(SERVER_BONUS_OBJS)
-	$(RM) $(CLIENT_BONUS_OBJS)
+	@make --no-print-directory -C $(LIBFT_PATH) clean
+	@$(RM) $(SERVER_OBJS)
+	@$(RM) $(CLIENT_OBJS)
+	@$(RM) $(TESTBINS)
+	@$(RM) $(SERVER_BONUS_OBJS)
+	@$(RM) $(CLIENT_BONUS_OBJS)
+	@echo "$(RED)All '.o' files were removed$(RESET)"
 
 fclean : clean
-	make -C $(LIBFT_PATH) fclean
-	$(RM) $(SERVER)
-	$(RM) $(CLIENT)
-	$(RM) $(SERVER_BONUS)
-	$(RM) $(CLIENT_BONUS)
+	@make --no-print-directory -C $(LIBFT_PATH) fclean
+	@$(RM) $(SERVER)
+	@$(RM) $(CLIENT)
+	@$(RM) $(SERVER_BONUS)
+	@$(RM) $(CLIENT_BONUS)
+	@echo "$(RED)Executable and library files were removed$(RESET)"
 
 re : fclean all
 
